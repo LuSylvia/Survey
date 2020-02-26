@@ -6,6 +6,129 @@
 
     <!--  Start : Your code should be within this block -->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Question 1"
+        android:textSize="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorBlack"
+        ></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Which brand of phone will you \nchoose if you are going to buy a\nnew one?"
+        android:textSize="20dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="55dp"
+        ></TextView>
+
+    <RadioGroup
+        android:id="@+id/rg_01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_01_iphone"
+        android:text="Iphone"
+
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_01_Nokia"
+        android:text="Nokia"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_01_Samsung"
+        android:text="Samsung"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MI"
+        android:id="@+id/rb_01_MI"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lenovo"
+        android:id="@+id/rb_01_Lenovo"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_01_Sony"
+        android:text="Sony"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_01_Others"
+        android:text="Others"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:textSize="20dp"
+        ></RadioButton>
+
+    </RadioGroup>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="NEXT"
+        android:id="@+id/btn_ques1_next"
+        android:textSize="18dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorGreen"
+        android:onClick="onBtnClick"
+
+        >
+    </Button>
+
+
+
+
+
+
+
+
+
+
 
     <!-- END    : Your code should be within this block -->
 
