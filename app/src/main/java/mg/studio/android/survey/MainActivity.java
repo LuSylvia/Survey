@@ -455,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putStringArray("report",msg);
                 intent.putExtra("bundle",bundle);
                 startActivity(intent);
-                finish();
+                //finish();
 
 
                 break;
