@@ -115,11 +115,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/mg/studio/android/survey/ReportActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="263" column="96" lean-forward="true" selection-start-line="263" selection-start-column="96" selection-end-line="263" selection-end-column="96" />
+            <state relative-caret-position="2039">
+              <caret line="192" column="64" selection-start-line="192" selection-start-column="64" selection-end-line="192" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#6892#6911#0" />
+                <element signature="method#myFindViewById#0;class#ReportActivity#0" />
+                <element signature="method#onCreate#0;class#ReportActivity#0" />
               </folding>
             </state>
           </provider>
@@ -172,9 +173,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -221,6 +219,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -332,7 +333,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" weight="0.14209116" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.14209116" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -340,7 +341,7 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" weight="0.3297587" />
       <window_info id="Capture Tool" order="8" />
-      <window_info active="true" id="Device File Explorer" order="9" sideWeight="0.5063291" visible="true" weight="0.1621984" />
+      <window_info id="Device File Explorer" order="9" sideWeight="0.5063291" weight="0.16420911" />
       <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49932975" weight="0.3125884" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49932975" weight="0.32956153" />
       <window_info anchor="bottom" id="TODO" order="2" />
@@ -349,7 +350,7 @@
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50067025" side_tool="true" weight="0.44978783" />
       <window_info anchor="bottom" id="Version Control" order="6" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49932975" weight="0.24752475" />
-      <window_info anchor="bottom" id="Android Profiler" order="8" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Gradle" order="1" weight="0.3297587" />
       <window_info anchor="right" id="Theme Preview" order="2" />
@@ -396,6 +397,12 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
+    <entry file="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Pixel_2_API_29 [emulator-5554]/sdcard/saveData1.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Pixel_2_API_29 [emulator-5554]/sdcard/saveData2.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mg/studio/android/survey/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8531">
@@ -403,19 +410,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Pixel_2_API_29 [emulator-5554]/sdcard/saveData2.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Pixel_2_API_29 [emulator-5554]/sdcard/saveData1.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mg/studio/android/survey/ReportActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="263" column="96" lean-forward="true" selection-start-line="263" selection-start-column="96" selection-end-line="263" selection-end-column="96" />
+        <state relative-caret-position="2039">
+          <caret line="192" column="64" selection-start-line="192" selection-start-column="64" selection-end-line="192" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#6892#6911#0" />
+            <element signature="method#myFindViewById#0;class#ReportActivity#0" />
+            <element signature="method#onCreate#0;class#ReportActivity#0" />
           </folding>
         </state>
       </provider>
