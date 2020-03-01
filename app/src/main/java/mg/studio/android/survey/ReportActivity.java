@@ -24,6 +24,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 
 public class ReportActivity extends AppCompatActivity {
@@ -129,6 +131,59 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * 使用BufferedWriter进行文本内容的追加
+     * @param file
+     * @param content
+     */
+    private void addTxtToFileBuffered(File file, String content) {
+        //在文本文本中追加内容
+        BufferedWriter out = null;
+        try {
+            //FileOutputStream(file, true),第二个参数为true是追加内容，false是覆盖
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true)));
+            out.newLine();//换行
+            out.write(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(out != null){
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 使用FileWriter进行文本内容的追加
+     * @param file
+     * @param content
+     */
+    private void addTxtToFileWrite(File file, String content){
+        FileWriter writer = null;
+        try {
+            //FileWriter(file, true),第二个参数为true是追加内容，false是覆盖
+            writer = new FileWriter(file, true);
+            writer.write("\r\n");//换行
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(writer != null){
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 
 
 
@@ -138,21 +193,50 @@ public class ReportActivity extends AppCompatActivity {
             File sdFile= Environment.getExternalStorageDirectory();
             File saveData=new File(sdFile,"saveData1.txt");
 
+
+            //在文本文本中追加内容
+            BufferedWriter out = null;
             try {
-                FileOutputStream fout=new FileOutputStream(saveData);
-                fout.write(        ("Survey Report"+"\r\n").getBytes()   );
+                //FileOutputStream(file, true),第二个参数为true是追加内容，false是覆盖
+                out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
+                out.newLine();//换行
+
+                out.write(   "Survey Report"   );
+                out.newLine();
                 for(int i=0;i<msg.length;i++){
-                    fout.write(    ("Answer"+(i+1)+":"+msg[i]+"\r\n").getBytes()    );
+                    out.write(    ("Answer"+(i+1)+":"+msg[i]+"\r\n")   );
 
                 }
-                fout.flush();
-                fout.close();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if(out != null){
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+
+
+//            try {
+//                FileOutputStream fout=new FileOutputStream(saveData);
+//                fout.write(        ("Survey Report"+"\r\n").getBytes()   );
+//                for(int i=0;i<msg.length;i++){
+//                    fout.write(    ("Answer"+(i+1)+":"+msg[i]+"\r\n").getBytes()    );
+//
+//                }
+//                fout.flush();
+//                fout.close();
+//
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
         }else{
-            Toast.makeText(ReportActivity.this,"NO SD CARD!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ReportActivity.this,"Save failed!",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -160,7 +244,10 @@ public class ReportActivity extends AppCompatActivity {
     //保存到JSON文件
     private void save2JSON(String msg[]){
         JSONObject json=new JSONObject();
+
         try {
+
+
             for(int i=0;i<msg.length;i++){
                 json.put("Answer"+(i+1),msg[i]);
             }
@@ -169,14 +256,43 @@ public class ReportActivity extends AppCompatActivity {
                 File sdFile= Environment.getExternalStorageDirectory();
                 File saveData=new File(sdFile,"saveData2.json");
 
-               FileOutputStream fout=new FileOutputStream(saveData);
-               fout.write(json.toString().getBytes());
-               fout.flush();
-               fout.close();
+
+                //在文本文本中追加内容
+                BufferedWriter out = null;
+                try {
+                    //FileOutputStream(file, true),第二个参数为true是追加内容，false是覆盖
+                    out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
+                    out.newLine();//换行
+
+
+                    for(int i=0;i<msg.length;i++){
+                        out.write(    json.toString()   );
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if(out != null){
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+//               FileOutputStream fout=new FileOutputStream(saveData);
+//               fout.write(json.toString().getBytes());
+//               fout.flush();
+//               fout.close();
+
 
 
             }else{
-                Toast.makeText(ReportActivity.this,"NO SD CARD!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ReportActivity.this,"Save failed!",Toast.LENGTH_SHORT).show();
             }
             System.out.println(json.toString());
 
