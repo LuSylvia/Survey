@@ -52,8 +52,6 @@ public class ReportActivity extends AppCompatActivity {
     //请求状态码
     private static int REQUEST_PERMISSION_CODE = 1;
 
-    //获得当前外部储存设备的目录
-    String SDCardRoot = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
 
 
 
@@ -113,7 +111,7 @@ public class ReportActivity extends AppCompatActivity {
                 save2SD(msg);
 
                 //存储到JSON文件
-                save2JSON(msg);
+                save2SDCardRoot(msg);
 
 
                 Toast.makeText(ReportActivity.this,"Save successed!",Toast.LENGTH_SHORT).show();
@@ -137,37 +135,61 @@ public class ReportActivity extends AppCompatActivity {
 
 
 
-    //保存到SD卡
+    //保存到内部存储/data/data/app包/app_test目录下
     private  void save2SD(String msg[]){
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            File sdFile= Environment.getExternalStorageDirectory();
-            File saveData=new File(sdFile,"saveData1.txt");
+            JSONObject json=new JSONObject();
 
-
-            //在文本文本中追加内容
-            BufferedWriter out = null;
             try {
-                //FileOutputStream(file, true),第二个参数为true是追加内容，false是覆盖
-                out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
-                out.newLine();//换行
-
-                out.write(   "Survey Report"   );
-                out.newLine();
+                
                 for(int i=0;i<msg.length;i++){
-                    out.write(    ("Answer"+(i+1)+":"+msg[i]+"\r\n")   );
-
+                    json.put("Answer"+(i+1),msg[i]);
                 }
+                //将json字符串写入到json文件中
+                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+                    File sdFile= getDir("test",MODE_PRIVATE);
+                    File saveData=new File(sdFile,"saveData1.json");
+
+                    Log.e("location","Location2:"+saveData);
+                    //在json文件中追加内容
+                    BufferedWriter out = null;
+                    try {
+
+                        out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
+                        out.newLine();//换行
+
+                        for(int i=0;i<msg.length;i++){
+                            out.write(    json.toString()   );
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if(out != null){
+                                out.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+
+
+
+
+
+                }else{
+                    Toast.makeText(ReportActivity.this,"Save failed!",Toast.LENGTH_SHORT).show();
+                }
+                System.out.println(json.toString());
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if(out != null){
-                        out.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
         }else{
@@ -177,8 +199,8 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
-    //保存到JSON文件
-    private void save2JSON(String msg[]){
+    //保存到sdcard根目录
+    private void save2SDCardRoot(String msg[]){
         JSONObject json=new JSONObject();
 
         try {
@@ -192,7 +214,7 @@ public class ReportActivity extends AppCompatActivity {
                 File sdFile= Environment.getExternalStorageDirectory();
                 File saveData=new File(sdFile,"saveData2.json");
 
-
+                Log.e("location","Location2:"+saveData);
                 //在json文件中追加内容
                 BufferedWriter out = null;
                 try {
@@ -219,10 +241,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
 
-//               FileOutputStream fout=new FileOutputStream(saveData);
-//               fout.write(json.toString().getBytes());
-//               fout.flush();
-//               fout.close();
+
 
 
 
@@ -239,4 +258,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
     }
+
+
+
 }
