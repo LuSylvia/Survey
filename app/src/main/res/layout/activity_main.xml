@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/btn_loadjson"
+        android:layout_width="185dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:onClick="myClick"
+        android:text="@string/load_json"
+        android:textSize="18sp"></Button>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_defaultQuestion"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+        android:text="@string/default_question"
+        android:onClick="myClick"
+        ></Button>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/monika"
+        android:layout_marginTop="45dp"
+        ></ImageView>
+
+
+
+
+</LinearLayout>

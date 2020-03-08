@@ -2,14 +2,28 @@ package mg.studio.android.survey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     static int count = 0;
@@ -90,10 +104,54 @@ public class MainActivity extends AppCompatActivity {
     RadioButton rb_12_5kTo10k;
     RadioButton rb_12_above10k;
 
+    //
+    TextView tv_single;
+    TextView tv_multiselect;
+    TextView tv_edit;
+
+    Button btn_single_next;
+    Button btn_multiselect_next;
+    Button btn_edit_next;
+    Button btn_loadjson;
+    Button btn_defaultquestion;
+
+    EditText ed_edit;
+    RadioGroup rg_single;
+    RadioGroup rg_multiselect;
+    ArrayList<CheckBox> checkBoxes=new ArrayList<>();
+
+
+
+    int numTotal=0;//用于记录问题总数
+    int currQues=0;//用于记录当前是第几个问题
+
+    private ArrayList<String> optionsList=new ArrayList<>();//存储动态生成问卷中单个问题的所有选项
+    private String selectOption;
+    ArrayList<String> answers=new ArrayList<>();//存储动态生成问卷中用户选择的答案
+    String type;//类型
+    String question;//题目
+
+
+    //String json="{\"survey\":{\"id\":\"12344134\",\"len\":\"2\",\"questions\":[{\"type\":\"single\",\"question\":\"How well do the professors teach at this university?\",\"options\":[{\"1\":\"Extremely well\"},{\"2\":\"Very well\"}]},{\"type\":\"single\",\"question\":\"How effective is the teaching outside yur major at the univesrity?\",\"options\":[{\"1\":\"Extremetly effective\"},{\"2\":\"Very effective\"},{\"3\":\"Somewhat effective\"},{\"4\":\"Not so effective\"},{\"5\":\"Not at all effective\"}]}]}}";
+    String json="";
+    JSONObject jsonObject3 =null;
+    JSONArray jsonQuestions=null;
+    JSONObject jsonQuestion=null;
+    JSONArray jsonOptions=null;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
+        setContentView(R.layout.activity_main);
+
+        btn_loadjson=findViewById(R.id.btn_loadjson);
+        btn_defaultquestion=findViewById(R.id.btn_defaultQuestion);
+
+        //得到本地json文本内容
+        String fileName = "demo.json";
+        json = getJson(this, fileName);
 
     }
 
@@ -175,6 +233,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void myFindViewByID_single(){
+        tv_single=findViewById(R.id.tv_single);
+        btn_single_next=findViewById(R.id.btn_single_next);
+        rg_single=findViewById(R.id.rg_single);
+    }
+
+    private void myFindViewByID_multiselect(){
+        tv_multiselect=findViewById(R.id.tv_multiselect);
+        btn_multiselect_next=findViewById(R.id.btn_multiselect_next);
+        rg_multiselect=findViewById(R.id.rg_multiselect);
+    }
+
+    private void myFindViewByID_edit(){
+        tv_edit=findViewById(R.id.tv_edit);
+        ed_edit=findViewById(R.id.ed_edit);
+        btn_edit_next=findViewById(R.id.btn_edit_next);
+
+    }
+
+    //读取json对象中的数据，并将其一一填充
+    private void loadJsonData()throws JSONException {
+        //获取问题对象，包括类型，题目，选项
+        jsonQuestion= jsonQuestions.getJSONObject(currQues);
+        //获取问题的类型
+        type= jsonQuestion.optString("type");
+        System.out.println("type:"+type);
+        //获取问题的题目
+        question= jsonQuestion.optString("question");
+        System.out.println("question:"+question);
+    }
+
+    //从assets路径读取sample.json到字符串json中
+    public static String getJson(Context context, String fileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        //获得assets资源管理器
+        AssetManager assetManager = context.getAssets();
+        //使用IO流读取json文件内容
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    assetManager.open(fileName), "utf-8"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
+    //默认问卷的点击事件
     public void onBtnClick(View view) {
         //绑定控件
         myFindViewbyid();
@@ -469,6 +579,250 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //动态生成问卷的点击事件
+    public void myClick(View view) {
+        switch (view.getId()){
+            //选用已经写好的问卷
+            case R.id.btn_defaultQuestion:
+                setContentView(R.layout.welcome);
+                break;
+
+            //读取assets文件下的sample.json文件
+            case R.id.btn_loadjson:
+                try {
+                    //用survey构造jsonObject3
+                    jsonObject3 = new JSONObject(String.valueOf(new JSONObject(json).getJSONObject("survey")));
+                    assert jsonObject3 != null;
+                    //获取问题数量，确定要构造的页面总数
+                    numTotal = this.jsonObject3.optInt("len");
+                    System.out.println("length=" + numTotal);
+                    //获取所有问题对象
+                    jsonQuestions = this.jsonObject3.optJSONArray("questions");
+                    //获取currQues处的问题
+                    loadJsonData();
+
+                    if (type.equals("single")) {
+                        showSingleQuestion();
+                    } else if (type.equals("multiselect")) {
+                        showMultiselectQuestion();
+                    } else if (type.equals("edit")) {
+                        showEditQuestion();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+                //单选
+            case R.id.btn_single_next:
+                //获取用户勾选选项
+                int id = rg_single.getCheckedRadioButtonId();
+                if (id == -1) {
+                    Toast.makeText(MainActivity.this, "You must select 1 choice first!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                //若存在被勾选的选项，则记录该选项的文字信息
+                RadioButton radioButton = findViewById(id);
+                answers.add("question"+(currQues + 1) + ":" + radioButton.getText().toString());
+
+                currQues++;
+
+                if (currQues == numTotal) {
+                    //已经是最后一个问题了，该跳转到finish界面
+                    jumpFinish();
+//                    Toast.makeText(this, "Last question!", Toast.LENGTH_SHORT).show();
+//                    for(int i=0;i<answers.size();i++){
+//                        //Log.e("Survey2",answers.get(i)+"\n");
+//                        System.out.println(answers.get(i));
+//                    }
+                    break;
+                } else {
+                    //否则，跳转到下一个问题
+                    try {
+                        loadJsonData();
+                        if (type.equals("single")) {
+                            showSingleQuestion();
+                        } else if (type.equals("multiselect")) {
+                            showMultiselectQuestion();
+                        } else if (type.equals("edit")) {
+                            showEditQuestion();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("survey2", " 单选跳转出错!");
+                    }
+
+                }
+
+                break;
+
+            //多选
+            case R.id.btn_multiselect_next:
+                //获取用户勾选选项
+                StringBuffer sb = new StringBuffer();
+                for (CheckBox checkbox : checkBoxes) {
+                    if (checkbox.isChecked()) {
+                        sb.append(checkbox.getText().toString() + "--");
+                    }
+                }
+                if (sb != null && "".equals(sb.toString())) {
+                    Toast.makeText(getApplicationContext(), "You should at least select 1 choice!", Toast.LENGTH_LONG).show();
+                    break;
+                } else {
+                    //Toast.makeText(getApplicationContext(), "你选择的是:" + sb.toString(), Toast.LENGTH_LONG).show();
+                    answers.add(   ("question"+(currQues + 1) + ":"+ sb.toString() ) );
+
+                }
+
+                currQues++;
+                if (currQues == numTotal) {
+                    //已经是最后一个问题了，该跳转到finish界面
+
+                    Toast.makeText(this, "Last question!", Toast.LENGTH_SHORT).show();
+                    jumpFinish();
+                    break;
+                } else {
+                    //否则，跳转到下一个问题
+                    try {
+                        loadJsonData();
+                        if (type.equals("single")) {
+                            showSingleQuestion();
+                        } else if (type.equals("multiselect")) {
+                            showMultiselectQuestion();
+                        } else if (type.equals("edit")) {
+                            showEditQuestion();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("survey2", " 多选跳转出错!");
+                    }
+
+                }
+
+                break;
+            case R.id.btn_edit_next:
+                String answer = ed_edit.getText().toString();
+                if (answer != null && !answer.equals("")) {
+                    answers.add("question"+(currQues + 1) + ":" + answer);
+
+                    currQues++;
+
+                    if (currQues == numTotal) {
+                        //已经是最后一个问题了，该跳转到finish界面
+                        Toast.makeText(this, "Last question!", Toast.LENGTH_SHORT).show();
+                        jumpFinish();
+                        break;
+                    } else {
+                        //否则，跳转到下一个问题
+                        try {
+                            loadJsonData();
+                            if (type.equals("single")) {
+                                showSingleQuestion();
+                            } else if (type.equals("multiselect")) {
+                                showMultiselectQuestion();
+                            } else if (type.equals("edit")) {
+                                showEditQuestion();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("survey2", " 编辑跳转出错!");
+                        }
+
+                    }
+
+                }else{
+                    Toast.makeText(this, "You should write somethins first!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+
+                break;
+
+            default:
+                break;
+        }
+
+
+    }
+
+
+    //显示单选页面
+    private  void showSingleQuestion()throws JSONException {
+        setContentView(R.layout.question_single);
+        myFindViewByID_single();
+        //获取所有选项
+        jsonOptions=new JSONArray(String.valueOf(jsonQuestion.get("options")));
+        //填充问题
+        tv_single.setText((currQues+1)+"."+question);
+        //移除原有的选项
+        rg_single.removeAllViews();
+        optionsList.clear();
+        //获取每个选项的内容，存放进选项列表里
+
+        for(int i=0;i<jsonOptions.length();i++){
+            optionsList.add(jsonOptions.getString(i));
+            //System.out.println("options:"+optionsList.get(i));
+        }
+
+
+        for(int i=0;i<optionsList.size();i++){
+            RadioButton rb=new RadioButton(this);
+            rg_single.addView(rb);
+            rb.setTextSize(18);
+            rb.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            rb.setPadding(50,10,50,10);
+            rb.setText(optionsList.get(i));
+        }
+    }
+
+    //显示多选页面
+    private void showMultiselectQuestion()throws JSONException{
+        setContentView(R.layout.question_multiselect);
+        myFindViewByID_multiselect();
+        //移除原有选项
+        rg_multiselect.removeAllViewsInLayout();
+        optionsList.clear();
+
+        jsonOptions=new JSONArray(String.valueOf(jsonQuestion.get("options")));
+
+        //填充问题
+        tv_multiselect.setText((currQues+1)+"."+question);
+        //获取每个选项的内容，存放进选项列表里
+        for(int i=0;i<jsonOptions.length();i++){
+            optionsList.add(jsonOptions.getString(i));
+            System.out.println("options:"+optionsList.get(i));
+        }
+        //移除checkboxes原有的checkbox
+        checkBoxes.clear();
+        //填充选项
+        for(int i=0;i<optionsList.size();i++){
+            CheckBox cb=new CheckBox(this);
+            rg_multiselect.addView(cb);
+            cb.setText(optionsList.get(i));
+            checkBoxes.add(cb);
+        }
+
+    }
+
+    //显示编辑页面
+    private  void showEditQuestion(){
+        setContentView(R.layout.question_edit);
+        myFindViewByID_edit();
+        ed_edit.setText(null);
+        //填充问题
+        tv_edit.setText((currQues+1)+"."+question);
+
+
+    }
+
+
+    public void jumpFinish(){
+        Intent intent=new Intent(MainActivity.this,Report2Activity.class);
+        intent.putExtra("result2",answers);
+        startActivity(intent);
+        finish();
+    }
 
 
 }

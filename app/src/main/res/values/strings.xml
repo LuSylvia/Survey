@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Survey</string>
+    <string name="default_question">Default Question</string>
+    <string name="load_json">Load json</string>
 </resources>

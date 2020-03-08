@@ -108,7 +108,7 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //存储到SD卡
-                save2SD(msg);
+                //save2SD(msg);
 
                 //存储到JSON文件
                 save2SDCardRoot(msg);
@@ -136,7 +136,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
     //保存到内部存储/data/data/app包/app_test目录下
-    private  void save2SD(String msg[]){
+    private  void save2DataAppTest(String msg[]){
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             JSONObject json=new JSONObject();
 
@@ -158,10 +158,10 @@ public class ReportActivity extends AppCompatActivity {
                         out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
                         out.newLine();//换行
 
-                        for(int i=0;i<msg.length;i++){
-                            out.write(    json.toString()   );
 
-                        }
+                        out.write(    json.toString()   );
+
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -212,7 +212,7 @@ public class ReportActivity extends AppCompatActivity {
             //将json字符串写入到json文件中
             if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
                 File sdFile= Environment.getExternalStorageDirectory();
-                File saveData=new File(sdFile,"saveData2.json");
+                File saveData=new File(sdFile,"result.json");
 
                 Log.e("location","Location2:"+saveData);
                 //在json文件中追加内容
@@ -222,10 +222,9 @@ public class ReportActivity extends AppCompatActivity {
                     out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveData, true)));
                     out.newLine();//换行
 
-                    for(int i=0;i<msg.length;i++){
-                        out.write(    json.toString()   );
+                    out.write(    json.toString()   );
 
-                    }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
