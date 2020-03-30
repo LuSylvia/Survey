@@ -7,13 +7,13 @@
 
 Please see the gif.
 
-![](E:\PROJECT\Android\build\HelloAndroid\survey\android-client\ScanQR.gif)
+![Demo](images/ScanQR.gif)
 
 
 
 
 
-![](E:\PROJECT\Android\build\HelloAndroid\survey\android-client\Upload.gif)
+![Demo](images/Upload.gif)
 
 # 3.What functionalities  the app should have?
 
